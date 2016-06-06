@@ -94,6 +94,13 @@ STDMETHODIMP CPSFileSystem::LoadFromFile(TCHAR* path, BOOL* ret)
   return S_OK;
 } // CPSFileSystem::LoadFromFile
 
+STDMETHODIMP CPSFileSystem::Flush(BOOL* ret)
+{
+  m_PSFS->Flush();
+  *ret = TRUE;
+  return S_OK;
+} // CPSFileSystem::Flush
+
 STDMETHODIMP CPSFileSystem::CreateFolder(TCHAR* path, BOOL* ret)
 {
   *ret = m_PSFS->CreateFolder(to_string(path, std::locale("rus")));

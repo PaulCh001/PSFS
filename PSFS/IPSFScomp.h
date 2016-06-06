@@ -20,6 +20,7 @@ class IPSFileSystem : public IUnknown
 public:
   STDMETHOD(LoadFromFile(TCHAR*, BOOL*)) PURE;
   STDMETHOD(CreateFolder(TCHAR*, BOOL*)) PURE;
+  STDMETHOD(Flush(BOOL*)) PURE;
   STDMETHOD(DeleteItem(TCHAR*, BOOL*)) PURE;
   STDMETHOD(CopyItem(TCHAR* src, TCHAR* dest, BOOL is_move, BOOL*)) PURE;
   STDMETHOD(OpenFile(TCHAR* path, TCHAR* mode, LONG* handle)) PURE;

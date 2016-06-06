@@ -31,6 +31,7 @@ public:
    // IPSFileSystem
    STDMETHOD(LoadFromFile(TCHAR*, BOOL* result));
    STDMETHOD(CreateFolder(TCHAR*, BOOL* result));
+   STDMETHOD(Flush(BOOL*));
    STDMETHOD(DeleteItem(TCHAR*, BOOL* result));
    STDMETHOD(CopyItem(TCHAR* src, TCHAR* dest, BOOL is_move, BOOL* result));
 
