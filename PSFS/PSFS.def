@@ -1,0 +1,9 @@
+LIBRARY      "PSFS"
+
+EXPORTS
+    ; Explicit exports can go here
+	DllGetClassObject   PRIVATE
+	DllCanUnloadNow     PRIVATE
+	DllRegisterServer   PRIVATE
+	DllUnregisterServer PRIVATE
+
