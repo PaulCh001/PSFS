@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PSFS", "PSFS\PSFS.vcxproj", "{D279EB75-FB3B-4CC3-8450-044E7AF16BEF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PSFS_test", "PSFS_test\PSFS_test.vcxproj", "{18C28F73-78F2-4F47-9D64-23CAA3130EE5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D279EB75-FB3B-4CC3-8450-044E7AF16BEF} = {D279EB75-FB3B-4CC3-8450-044E7AF16BEF}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D279EB75-FB3B-4CC3-8450-044E7AF16BEF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D279EB75-FB3B-4CC3-8450-044E7AF16BEF}.Debug|Win32.Build.0 = Debug|Win32
+		{D279EB75-FB3B-4CC3-8450-044E7AF16BEF}.Release|Win32.ActiveCfg = Release|Win32
+		{D279EB75-FB3B-4CC3-8450-044E7AF16BEF}.Release|Win32.Build.0 = Release|Win32
+		{18C28F73-78F2-4F47-9D64-23CAA3130EE5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18C28F73-78F2-4F47-9D64-23CAA3130EE5}.Debug|Win32.Build.0 = Debug|Win32
+		{18C28F73-78F2-4F47-9D64-23CAA3130EE5}.Release|Win32.ActiveCfg = Release|Win32
+		{18C28F73-78F2-4F47-9D64-23CAA3130EE5}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
