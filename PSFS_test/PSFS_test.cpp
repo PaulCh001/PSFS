@@ -205,7 +205,7 @@ int _tmain(int argc, _TCHAR* argv[])
   TestSuccess(fs->WriteData(handle, buffer3, sizeof(buffer3) - 1, &ret), ret);
   TestSuccess(fs->CloseFile(handle, &ret), ret);
 
-  TestSuccess(fs->OpenFile(_T("\\Music\\Good Old Songs\\Frank Sinatra\\New York, New York.txt"), _T("r"), &handle), handle);
+  TestFail(fs->OpenFile(_T("\\Music\\Good Old Songs\\Frank Sinatra\\New York, New York.txt"), _T("r"), &handle), handle);
 
   TestFail(fs->OpenFile(_T("\\Music\\Good Old Songs\\Frank Sinatra\\Kalinka"), _T("r"), &handle), handle);
 

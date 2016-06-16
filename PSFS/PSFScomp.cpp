@@ -12,7 +12,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 CPSFileSystem::CPSFileSystem()
-  : m_ref(0), m_PSFS(nullptr)
+  : m_ref(0)
 {
   // Увеличить значение внешнего счетчика объектов
   InterlockedIncrement(&g_objs_count); 
@@ -20,8 +20,6 @@ CPSFileSystem::CPSFileSystem()
 
 CPSFileSystem::~CPSFileSystem()
 {
-  delete m_PSFS;
-
   // Уменьшить значение внешнего счетчика объектов
   InterlockedDecrement(&g_objs_count); 
 } // CPSFileSystem::~CPSFileSystem
@@ -87,7 +85,10 @@ std::wstring to_widestring(std::string const &s, std::locale const &loc)
 
 STDMETHODIMP CPSFileSystem::LoadFromFile(TCHAR* path, BOOL* ret)
 {
-  m_PSFS = new CPSFS_impl(to_string(path, std::locale("rus")));
+  if (m_PSFS.get() != nullptr)
+    return S_FALSE;
+
+  m_PSFS = std::unique_ptr<CPSFS_impl>(new CPSFS_impl(to_string(path, std::locale("rus"))));
 
   *ret = TRUE;
 
@@ -96,6 +97,9 @@ STDMETHODIMP CPSFileSystem::LoadFromFile(TCHAR* path, BOOL* ret)
 
 STDMETHODIMP CPSFileSystem::Flush(BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   m_PSFS->Flush();
   *ret = TRUE;
   return S_OK;
@@ -103,6 +107,9 @@ STDMETHODIMP CPSFileSystem::Flush(BOOL* ret)
 
 STDMETHODIMP CPSFileSystem::CreateFolder(TCHAR* path, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   *ret = m_PSFS->CreateFolder(to_string(path, std::locale("rus")));
 
   return S_OK;
@@ -110,6 +117,9 @@ STDMETHODIMP CPSFileSystem::CreateFolder(TCHAR* path, BOOL* ret)
 
 STDMETHODIMP CPSFileSystem::DeleteItem(TCHAR* path, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   *ret = m_PSFS->DeleteItem(to_string(path, std::locale("rus")));
 
   return S_OK;
@@ -117,6 +127,9 @@ STDMETHODIMP CPSFileSystem::DeleteItem(TCHAR* path, BOOL* ret)
 
 STDMETHODIMP CPSFileSystem::CopyItem(TCHAR* src, TCHAR* dest, BOOL is_move, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   *ret = m_PSFS->CopyItem(to_string(src, std::locale("rus")), to_string(dest, std::locale("rus")), is_move == TRUE);
 
   return S_OK;
@@ -124,18 +137,27 @@ STDMETHODIMP CPSFileSystem::CopyItem(TCHAR* src, TCHAR* dest, BOOL is_move, BOOL
 
 STDMETHODIMP CPSFileSystem::OpenFile(TCHAR* path, TCHAR* mode, LONG* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   *ret = m_PSFS->OpenFile(to_string(path, std::locale("rus")), to_string(mode, std::locale("rus")));
   return S_OK;
 } // CPSFileSystem::OpenFile
 
 STDMETHODIMP CPSFileSystem::CloseFile(LONG handle, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   *ret = m_PSFS->CloseFile(handle);
   return S_OK;
 } // CPSFileSystem::CloseFile
 
 STDMETHODIMP CPSFileSystem::GetFileSize(LONG handle, ULONG* size, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   size_t _size = *size;
   *ret = m_PSFS->GetFileSize(handle, _size);
   *size = _size;
@@ -144,18 +166,27 @@ STDMETHODIMP CPSFileSystem::GetFileSize(LONG handle, ULONG* size, BOOL* ret)
 
 STDMETHODIMP CPSFileSystem::SetFilePos(LONG handle, ULONG pos, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   *ret = m_PSFS->SetFilePos(handle, pos);
   return S_OK;
 } // CPSFileSystem::SetFilePos
 
 STDMETHODIMP CPSFileSystem::WriteData(LONG handle, char* data, ULONG datasize, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   *ret = m_PSFS->WriteData(handle, data, (size_t)datasize);
   return S_OK;
 } // CPSFileSystem::WriteData
 
 STDMETHODIMP CPSFileSystem::ReadData(LONG handle, char* data, ULONG datasize, ULONG* bytesread, BOOL* ret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   size_t _bytesread = *bytesread;
   *ret = m_PSFS->ReadData(handle, data, (size_t)datasize, _bytesread);
   *bytesread = _bytesread;
@@ -164,6 +195,9 @@ STDMETHODIMP CPSFileSystem::ReadData(LONG handle, char* data, ULONG datasize, UL
 
 STDMETHODIMP CPSFileSystem::PrintOut(BSTR* bret)
 {
+  if (m_PSFS.get() == nullptr)
+    return S_FALSE;
+
   std::string ret = m_PSFS->PrintOut();
 
   *bret = SysAllocString(to_widestring(ret, std::locale("rus")).c_str());

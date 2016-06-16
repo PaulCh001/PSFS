@@ -8,6 +8,8 @@
 #include "IPSFScomp.h"
 #include "PSFSimpl.h"
 
+#include <memory>
+
 extern long g_objs_count;
 extern long g_locks;
 
@@ -45,7 +47,8 @@ public:
    STDMETHOD(PrintOut(BSTR*));
 
 private:
-  CPSFS_impl* m_PSFS;
+  std::unique_ptr <CPSFS_impl> m_PSFS;
+  //CPSFS_impl* m_PSFS;
 }; // CPSFileSystem
 
 class CPSFileSystemClassFactory : public IClassFactory
